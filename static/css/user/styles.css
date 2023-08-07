@@ -7,3 +7,13 @@ body {
     min-height: 100%;
     background: linear-gradient(161deg, #9934d5, #07b49a);
 }
+
+.invalid{
+
+    font-size: 15px;
+}
+
+.valid{
+    color: green;
+
+}
