@@ -89,14 +89,20 @@ function generateRandomPassword(length) {
 }
 
 
-const generatePassword = function () {
+const validatePassword = function () {
     let password = document.getElementById("password");
     let password2 = document.getElementById("password2");
+    let upperCase = /[A-Z]/;
+    let lowerCase = /[a-z]/;
+    let number = /[0-9]/;
+    let special = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
     const passwordRegex = /^[0-9,A-Z,a-z,!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{12}$/;
 
     let generatedPassword = generateRandomPassword(12);
-    while (!generatedPassword.match(passwordRegex)) {
+    while (!generatedPassword.match(upperCase) && !generatedPassword.match(lowerCase) && !generatedPassword.match(number) && !generatedPassword.match(special)) {
+        console.log("Generated password is not valid");
+
         generatedPassword = generateRandomPassword(12);
     }
 
@@ -108,9 +114,14 @@ const generatePassword = function () {
 
 randomElement.addEventListener("click", generatePassword);
 
+password1 = document.querySelector("#password");
+password2 = document.querySelector("#password2");
 
+password2.addEventListener("keyup", function () {
+    if (password1.value != password2.value) {
+        password2.setCustomValidity("Passwords Don't Match");
+    } else {
+        password2.setCustomValidity("");
+    }
 
-function validatePassword(){
-    
-
-}
+})
