@@ -1,0 +1,25 @@
+{% extends 'password_manager/base.html' %}
+
+
+{% block section %}
+
+{% for password in passwords %}
+<!-- class text for section html -->
+<div class="card text" style="width: 18rem;">
+    <div class="card-body">
+        <h3 class="card-title">{{password.title}}</h3>
+        <div class="input-group mb-3">
+            <input class="form-control password" id="password_{{password.id}}" class="block mt-1 w-full" type="password" name="password"
+                value="{{password.value}}" readonly />
+            <span class="input-group-text togglePassword" id="" onclick="showPassword('password',this)">
+                <i class="fa-solid fa-eye" style="cursor: pointer;"></i>
+            </span>
+        </div>
+
+        <a href="#" class="card-link">View history</a>
+    </div>
+</div>
+<br>
+{% endfor %}
+
+{% endblock section %}
