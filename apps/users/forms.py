@@ -66,6 +66,7 @@ class FormRegister(forms.ModelForm):
                 }
             ),
         }
+
     def clean_password2(self):
         password = self.cleaned_data.get("password")
         password2 = self.cleaned_data.get("password2")
@@ -79,4 +80,3 @@ class FormRegister(forms.ModelForm):
         if commit:
             user.save()
         return user
-
