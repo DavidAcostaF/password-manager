@@ -13,5 +13,5 @@ class Home(TemplateView):
         user = request.user
         password = Password.objects.filter(author=user)
         context = {"password": password}
-        
+
         return render(request, self.template_name, context)
