@@ -53,5 +53,5 @@ class GetPassword(View):
     def get(self, request,id, *args, **kwargs):
         user = request.user
         password = Password.objects.get(id=id, author=user)
-        password_decrypted = decrypt(password.password)
-        return JsonResponse({"password": password_decrypted})
+        # password_decrypted = decrypt(password.password)
+        return JsonResponse({"password": password.title})
