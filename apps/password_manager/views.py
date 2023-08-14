@@ -32,7 +32,6 @@ class SavePassword(View):
         body_unicode = request.body.decode("utf-8")
         body = json.loads(body_unicode)
         form = self.form(body)
-        print(form.is_valid())
         if form.is_valid():
             password_encrypted = encrypt(body["password"])
             password_created = Password.objects.create(
@@ -52,6 +51,6 @@ class SavePassword(View):
 class GetPassword(View):
     def get(self, request,id, *args, **kwargs):
         user = request.user
-        password = Password.objects.get(id=id, author=user)
-        # password_decrypted = decrypt(password.password)
-        return JsonResponse({"password": password.title})
+        password_object = Password.objects.get(id=id, author=user)
+        password_decrypted = decrypt(password_object.password)
+        return JsonResponse({"password": password_decrypted})
