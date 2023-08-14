@@ -19,8 +19,8 @@ class Home(TemplateView):
         user = request.user
         # .orger_by("-created_at")  # to get the latest password first
         password = Password.objects.filter(author=user)
-        context = {"password": password}
-
+        context = {"passwords": password}
+        print(password)
         return render(request, self.template_name, context)
 
 

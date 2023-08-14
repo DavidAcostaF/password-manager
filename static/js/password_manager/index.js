@@ -1,17 +1,4 @@
-function showPassword(id, iconEye) {
-    element = document.getElementById(id);
-    if (element.type === "password") {
-        element.type = "text";
-        iconEye.children[0].classList.remove("fa-eye");
-        iconEye.children[0].classList.add("fa-eye-slash");
 
-    } else {
-        element.type = "password";
-        iconEye.children[0].classList.remove("fa-eye-slash");
-        iconEye.children[0].classList.add("fa-eye");
-    }
-
-}
 
 
 function getCookie(name) {
@@ -45,6 +32,43 @@ async function postData(url, body) {
         })
 
     }
+
+}
+
+function showPassword(id, iconEye) {
+    inputPassword = document.getElementById(`password_${id}`);
+    if (inputPassword.type === "password") {
+        inputPassword.type = "text";
+        inputPassword.hidden = false;
+        if (inputPassword.value == "") {
+            getPassword(inputPassword)
+        }
+        iconEye.children[0].classList.remove("fa-eye-slash");
+        iconEye.children[0].classList.add("fa-eye");
+
+    } else {
+        inputPassword.type = "password";
+        inputPassword.hidden = true;
+        iconEye.children[0].classList.remove("fa-eye");
+        iconEye.children[0].classList.add("fa-eye-slash");
+    }
+
+}
+
+async function getData(url) {
+    response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken,
+
+        },
+    })
+
+}
+async function getPassword(inputPassword) {
+    response = await getData(`/get_password/${id}`);
+    inputPassword.value = response.password;
 
 }
 
