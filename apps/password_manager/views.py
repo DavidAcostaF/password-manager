@@ -47,3 +47,11 @@ class SavePassword(View):
             }
             return JsonResponse(success)
         return JsonResponse({"error": "Password not saved"})
+
+
+class GetPassword(View):
+    def get(self, request,id, *args, **kwargs):
+        user = request.user
+        password = Password.objects.get(id=id, author=user)
+        password_decrypted = decrypt(password.password)
+        return JsonResponse({"password": password_decrypted})
