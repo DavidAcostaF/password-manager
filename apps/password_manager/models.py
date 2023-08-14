@@ -4,7 +4,7 @@ from apps.users.models import User
 
 class Password(models.Model):
     title = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
+    password = models.CharField(max_length=150)
     author = models.ForeignKey(User, on_delete=models.CASCADE,related_name="author")
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)

@@ -1,9 +1,13 @@
+import json
 from django.shortcuts import render
-from django.views.generic import CreateView, FormView, TemplateView
+from django.views.generic import CreateView, FormView, TemplateView, View
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect
 
 from .models import Password
+from .forms import PasswordForm
+from .utilities import encrypt, decrypt
 
-from cryptography.fernet import Fernet
 
 # Create your views here.
 
@@ -20,33 +24,26 @@ class Home(TemplateView):
         return render(request, self.template_name, context)
 
 
-class SavePassword(CreateView):
-    model = Password
-    
-    def post(self,request,*args,**kwargs):
+class SavePassword(View):
+    form = PasswordForm
+
+    def post(self, request, *args, **kwargs):
         user = request.user
-        password = request.POST.get("password")
-        title= request.POST.get("title")
-        if password and title:
-            password_encrypted = encrypt(password)
-            password_created = Password.objects.create(author=user,title=title,password=password_encrypted)
+        body_unicode = request.body.decode("utf-8")
+        body = json.loads(body_unicode)
+        form = self.form(body)
+        print(form.is_valid())
+        if form.is_valid():
+            password_encrypted = encrypt(body["password"])
+            password_created = Password.objects.create(
+                author=user, title=body["title"], password=password_encrypted
+            )
             password_created.save()
 
             success = {
-                'success':' Password saved successfully',
-                'title': 'title',
-                'id': password_created.id,
+                "success": " Password saved successfully",
+                "title": "title",
+                "id": password_created.id,
             }
-
-
-def encrypt(password):
-    key = Fernet.generate_key()
-    f = Fernet(key)
-    encrypted = f.encrypt(password.encode())
-    return encrypted
-        
-def decrypt(password):
-    key = Fernet.generate_key()
-    f = Fernet(key)
-    decrypted = f.decrypt(password.encode())
-    return decrypted
+            return JsonResponse(success)
+        return JsonResponse({"error": "Password not saved"})
