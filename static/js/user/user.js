@@ -71,6 +71,7 @@ const showPassword = function () {
         password.type = "password";
         password2.type = "password";
     }
+    
 }
 
 const randomElement = document.getElementById("random");
